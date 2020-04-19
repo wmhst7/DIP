@@ -33,6 +33,7 @@ def affine_transformation(src, tris, trit):
     return tar
 
 
+#
 def morph_one(src, tar, alpha, tris, trit):
     src_ = np.zeros(np.shape(src), dtype='float32')
     tar_ = np.zeros(np.shape(tar), dtype='float32')
@@ -52,17 +53,15 @@ def morph_one(src, tar, alpha, tris, trit):
                 if inside_triangle([x, y], tri[i]):
                     res[y, x, :] = alpha * src_[y, x, :] + (1.0 - alpha) * tar_[y, x, :]
 
-    # io.imsave('./face morphing/src_.png', src_)
-    # io.imsave('./face morphing/tar_.png', tar_)
     return res
 
 
 # Produce k images
 def face_morphing(src, tar, k=1):
     # Detect face and landmarks
-    with open('./face morphing/source1.json') as f:
+    with open('./face morphing/wmh.json') as f:
         src_lm = json.load(fp=f)['faces'][0]['landmark']
-    with open('./face morphing/target1.json') as f:
+    with open('./face morphing/kris.json') as f:
         tar_lm = json.load(fp=f)['faces'][0]['landmark']
 
     # Delaunay triangle
@@ -71,6 +70,7 @@ def face_morphing(src, tar, k=1):
     dels = Delaunay(spoints)
     tris = spoints[dels.simplices]
     trit = tpoints[dels.simplices]
+
     # Calculate and morph
     for i in range(k):
         alpha = 1.0 - (i + 1.0) / (k + 1)
@@ -79,6 +79,6 @@ def face_morphing(src, tar, k=1):
 
 
 if __name__ == '__main__':
-    src = io.imread('./face morphing/source1.png')
-    tar = io.imread('./face morphing/target1.png')
-    face_morphing(src, tar, 5)
+    src = io.imread('./face morphing/wmh.png')
+    tar = io.imread('./face morphing/kris.png')
+    face_morphing(src, tar, 3)
