@@ -3,7 +3,7 @@ import numpy as np
 
 def get_epipole(F):
     v0, vec0 = np.linalg.eig(F)
-    v1, vec1 = np.linalg.eig(np.transpose(F))
+    v1, vec1 = np.linalg.eig(F.T)
     e0 = vec0[:, np.argmin(v0)]
     e1 = vec1[:, np.argmin(v1)]
     return e0, e1
